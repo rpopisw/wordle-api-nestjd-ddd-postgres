@@ -26,6 +26,7 @@ export class CreateUserCommandHandler implements ICommandHandler<CreateUserComma
             throw new BadRequestException('User already exists');
         }
         const user = new User({ userName, password, rol });
+        user.encryptPassword();
         const userCreated = await this.repository.save(user);
         return CreateUserResponseDto.fromDomainToResponse(userCreated);
     }
