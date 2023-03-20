@@ -8,4 +8,6 @@ export interface UserRepository {
         userName: string;
         count: number;
     }[]>;
+    findNumberGamesCorrectByUserId(userId: string): Promise<number>;
+    findNumberGamesIncorrectByUserId(userId: string): Promise<number>;
 }

@@ -49,5 +49,37 @@ export class UserInfrastructure implements UserRepository{
             }
         });
     }
+
+    async findNumberGamesCorrectByUserId(userId: string): Promise<number> {
+        const user = await DBProvider.manager.getRepository(UserEntity).find({
+            relations: ['userWords'],
+            where: {
+                id: userId,
+                userWords: {
+                    isResolved: true
+                }
+            }
+        });
+        if(user.length > 0){
+            return user[0].userWords.length;
+        }
+        return 0;
+    }
+
+    async findNumberGamesIncorrectByUserId(userId: string): Promise<number> {
+        const user = await DBProvider.manager.getRepository(UserEntity).find({
+            relations: ['userWords'],
+            where: {
+                id: userId,
+                userWords: {
+                    isResolved: false
+                }
+            }
+        });
+        if(user.length > 0){
+            return user[0].userWords.length;
+        }
+        return 0;
+    }
      
 }

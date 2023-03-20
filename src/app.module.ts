@@ -6,6 +6,7 @@ import { CreateUserCommandHandler } from './application/commands/create-user.com
 import { MatchWordCommandHandler } from './application/commands/match-word.command';
 import { SignInUserCommandHandler } from './application/commands/sign-in-user.command';
 import { GetFirstTenPlayersQueryHandler } from './application/queries/get-first-ten-players.query';
+import { GetNumberGamesByPlayerQueryHandler } from './application/queries/get-number-games-by-player.query';
 import { DBProvider } from './DBProvider';
 import { UserWordInfrastucture } from './infrastructure/user-word.infrastructure';
 import { UserInfrastructure } from './infrastructure/user.infrastructure';
@@ -15,7 +16,8 @@ import { UserController } from './interfaces/http/user.controller';
 import { WordController } from './interfaces/http/word.controller';
 
 const controllers = [ HealthController,UserController,WordController ];
-const application = [ CreateUserCommandHandler, SignInUserCommandHandler, MatchWordCommandHandler, GetFirstTenPlayersQueryHandler];
+const application = [ CreateUserCommandHandler, SignInUserCommandHandler, MatchWordCommandHandler
+  , GetFirstTenPlayersQueryHandler, GetNumberGamesByPlayerQueryHandler];
 const infrastructure = [ UserInfrastructure,WordInfrastructure, UserWordInfrastucture];
 
 @Module({

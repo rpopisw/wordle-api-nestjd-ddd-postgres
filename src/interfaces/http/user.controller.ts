@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Query } from "@nestjs/common";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ApiResponse, ApiTags } from "@nestjs/swagger";
 import { CreateUserCommand } from "src/application/commands/create-user.command";
 import { SignInUserCommand } from "src/application/commands/sign-in-user.command";
 import { GetFirstTenPlayersQuery } from "src/application/queries/get-first-ten-players.query";
+import { GetNumberGamesByPlayerQuery } from "src/application/queries/get-number-games-by-player.query";
 import { CreateUserRequestDto } from "./dtos/crate-user.request.dto";
 import { SiginUserRequestDto } from "./dtos/sign-in-user.request.dto";
 
@@ -35,6 +36,13 @@ export class UserController {
     @Get('/max-points')
     async getFirstTenUsers(@Query('number') number: number) {
         const query = new GetFirstTenPlayersQuery(number);
+        return await this.queryBus.execute(query);
+    }
+
+    @ApiResponse({ status:200, description: 'Get winner games and losser games' })
+    @Get('/report-games/:userId')
+    async getNumberGamesByPlayer(@Param('userId') userId: string) {
+        const query = new GetNumberGamesByPlayerQuery(userId);
         return await this.queryBus.execute(query);
     }
 }
