@@ -24,7 +24,7 @@ Todos los servicios podran verlos en la documentacion ingresando a
 
 ## http://localhost:3000/docs
 
-Además, este proyecto utiliza contenedores Docker para la fácil implementación y administración de la aplicación y la base de datos DynamoDB.
+Además, este proyecto utiliza contenedores Docker para la fácil implementación y administración de la aplicación y la base de datos Postgres.
 
 ## Características:
 
