@@ -24,4 +24,15 @@ export class UserDTO{
         return user;
     }
 
+    static fromEntityToDomainWithPoints(userEntity: UserEntity, points: number): {
+        userName: string;
+        points: number;
+    }{
+        const user = {
+            userName: userEntity.userName,
+            points: points
+        }
+        return user;
+    }
+
 }

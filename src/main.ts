@@ -11,7 +11,7 @@ async function bootstrap() {
     .setTitle('wordless')
     .setDescription('The wordless API description')
     .setVersion('1.0')
-    .addTag('cards')
+    .addTag('wordless')
 
   const documentBuild = config.build();
   

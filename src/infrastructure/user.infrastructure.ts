@@ -2,6 +2,7 @@ import { DBProvider } from "src/DBProvider";
 import { User } from "src/domain/aggregates/user";
 import { UserRepository } from "src/domain/repositories/user.repository";
 import { UserDTO } from "./dtos/user.dto";
+import { UserWordEntity } from "./entities/user-word.entity";
 import { UserEntity } from "./entities/user.entity";
 
 export class UserInfrastructure implements UserRepository{
@@ -24,6 +25,29 @@ export class UserInfrastructure implements UserRepository{
             return UserDTO.fromEntityToDomain(user[0]);
         }
         return null;
+    }
+
+    async findFirstUsers(number: number): Promise<{
+        userName: string;
+        count: number;
+    }[]> {
+        const users = await DBProvider.manager.getRepository(UserWordEntity).createQueryBuilder("userWord")
+        .select("userWord.user", "user")
+        .addSelect("user.userName", "userName")
+        .addSelect("COUNT(userWord.user)", "count")
+        .innerJoin("userWord.user", "user")
+        .where("userWord.isResolved = :isResolved", {isResolved: true})
+        .groupBy("userWord.user")
+        .addGroupBy("user.userName")
+        .orderBy("count", "DESC")
+        .limit(number)
+        .getRawMany();
+        return users.map(user => {
+            return {
+                userName: user.userName,
+                count: user.count
+            }
+        });
     }
      
 }

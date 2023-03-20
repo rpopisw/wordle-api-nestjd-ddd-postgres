@@ -73,6 +73,5 @@ export class MatchWordCommandHandler implements ICommandHandler<MatchWordCommand
             response = [];
         }
         return response;
-
     }
 }
