@@ -33,21 +33,28 @@ export class MatchWordCommandHandler implements ICommandHandler<MatchWordCommand
         } else {
             const userWord = await this.wordUserRepository.findByUserIdAndWordId(userId,wordSelected.properties().id);
             userWord.attemptsCount();
-            console.log('userWord', userWord);
             await this.wordUserRepository.update(userWord);
         }
+        console.log(wordSelected.properties().word);
         const response = this.getValue(word, wordSelected.properties().word);
+        if(response.length === 0){
+            const userWord = await this.wordUserRepository.findByUserIdAndWordId(userId,wordSelected.properties().id);
+            userWord.resolve();
+            await this.wordUserRepository.update(userWord);   
+        }
         return response;
     }
 
     getValue(word: string, selectedWord: string): [] {
         let response = [] as any;
+        let correct = 0;
         for (let i = 0; i < selectedWord.length; i++) {
             if (word[i] === selectedWord[i]) {
                 response.push({
                     letter: word[i],
                     value: 1
                 });
+                correct++;
             }
             else if (selectedWord.includes(word[i])) {
                 response.push({
@@ -61,6 +68,9 @@ export class MatchWordCommandHandler implements ICommandHandler<MatchWordCommand
                     value: 3
                 });
             }
+        }
+        if (correct === selectedWord.length) {
+            response = [];
         }
         return response;
 
