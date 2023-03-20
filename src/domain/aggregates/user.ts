@@ -1,4 +1,5 @@
 import { AggregateRoot } from "@nestjs/cqrs";
+import * as bcrypt from 'bcrypt';
 
 export type UserEssentials = {
     userName: string;
@@ -24,6 +25,11 @@ export class User extends AggregateRoot<UserProperties> {
         super();
         Object.assign(this, properties);
         this.createdAt = new Date();
+        this.password = this.encryptPassword();
+    }
+
+    encryptPassword(){
+        return bcrypt.hashSync(this.password, 10);
     }
 
     properties(){
