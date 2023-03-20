@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { DataSource, EntityManager } from 'typeorm';
+import { UserWordEntity } from './infrastructure/entities/user-word.entity';
 import { UserEntity } from './infrastructure/entities/user.entity';
+import { WordEntity } from './infrastructure/entities/word.entity';
 
 let manager: EntityManager;
 @Injectable()
@@ -20,7 +22,7 @@ export class DBProvider {
     };
   }
   async onModuleInit() {
-    const entities = [UserEntity];
+    const entities = [UserEntity,WordEntity,UserWordEntity];
     const config = this.dbConfigPostgres();
 
     this.dataSource = await new DataSource({

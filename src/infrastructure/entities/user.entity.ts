@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UserWordEntity } from "./user-word.entity";
 
 @Entity({ name: "users" })
 export class UserEntity{
@@ -23,4 +24,7 @@ export class UserEntity{
       onUpdate: 'CURRENT_TIMESTAMP(6)',
     })
     updatedAt: Date;
+
+    @OneToMany(()=> UserWordEntity, userWord => userWord.user)
+     userWords: UserWordEntity[];
 } 
