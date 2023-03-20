@@ -4,32 +4,103 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+  # API TOKEN TARJETA / NESTJS-MONGODB-DDD-CQRS-DOCKER
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Este es un proyecto de API construido con NestJS y MongoDB. La arquitectura sigue el patrón DDD y utiliza CQRS y value objects para mantener la cohesión y la separación de responsabilidades.
+
+La API proporciona dos servicios: crear token y obtener datos de la tarjeta por el token generado. Utiliza JSON Web Tokens (JWT) para generar tokens seguros 
+
+Además, este proyecto utiliza contenedores Docker para la fácil implementación y administración de la aplicación y la base de datos DynamoDB.
+
+## Características:
+
+* Patrón de arquitectura DDD
+* CQRS para separar las operaciones de lectura y escritura
+* Value objects para mantener la cohesión y la separación de responsabilidades
+* Uso de MongoDB como base de datos
+* Generación de tokens seguros con JWT
+
+## Estructura de Codigo 
+
+![Screen Shot 2023-03-13 at 17 03 16](https://user-images.githubusercontent.com/69777661/224842214-7906a1a0-7de1-4848-886b-7e50f733efe0.png)
+
 
 ## Installation
 
+
+1.- Clonar repositorio en tu local
+
+2.- Instalar Dependencias 
 ```bash
 $ npm install
+```
+3.- Crea un archivo .env con las variables de entorno necesarias. Consulta el archivo .env.example para ver los valores necesarios.
+
+4.- Ir al directorio dockerfiles y levantar las imagenes
+
+```bash
+$ docker build -t nest-dev .
+$ docker build -t mongodb-image  -f Dockerfile.mongodb .
+```
+
+5.- Crear los contenedores de la bd y la aplicacion en dev
+
+```bash
+$ docker run -d app-nestjs-dev -p 3000:3000 -v $(pwd):/app nestjs-dev
+$ docker run -p 27017:27017 mongodb-image
+```
+## Uso 
+
+## Crear Token 
+
+Url: `card/create-token`
+
+Header: pk:pk_test_dsd
+
+Body: 
+
+```bash
+{
+	"card_number":"4111111111111111",
+	"expiration_year":"2023",
+	"expiration_month":"02",
+	"cvv":"123",
+	"email":"robert@gmail.com"
+}
+```
+
+Respuesta: 
+
+```bash
+{
+	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJkTnVtYmVyIjoiNDExMTExMTExMTExMTExMSIsImN2diI6IjEyMyIsImV4cGlyYXRpb25Nb250aCI6IjAyIiwiZXhwaXJhdGlvblllYXIiOiIyMDIzIiwiZW1haWwiOiJyb2JlcnRAZ21haWwuY29tIiwiaWF0IjoxNjc4NzM2ODIxLCJleHAiOjE2Nzg3MzY4ODF9.K9tJNMZLHvNvYdiGyvKOu_rqjQmzC3bNQgO7h8f1gWQ",
+	"cardNumber": "4111111111111111",
+	"cvv": "123",
+	"expirationMonth": "02",
+	"expirationYear": "2023",
+	"email": "robert@gmail.com"
+}
+```
+
+## Obtener tarjeta por token
+
+
+url: `card/:token`
+
+Header: pk:pk_test_dsd
+
+Respuesta: 
+
+```bash
+{
+"cardNumber": "4111111111111111",
+	"expirationMonth": "02",
+	"expirationYear": "2023",
+	"email": "robert@gmail.com"
+}
 ```
 
 ## Running the app
@@ -58,16 +129,6 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## Enlace de la documentacion 
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+http://localhost:3000/docs

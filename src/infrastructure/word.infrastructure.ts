@@ -53,4 +53,19 @@ export class WordInfrastructure implements WordRepository {
         }
         return null;
     }
+
+    async findWordsMoreResolved(limit:number): Promise<Word[]> {
+        const words = await DBProvider.manager.getRepository(WordEntity).query(`
+        SELECT words.word as word,words.id as id, count(user_words.word_id) as resolved
+        FROM user_words
+        JOIN words ON words.id = user_words.word_id
+        where user_words.is_resolved = true
+        GROUP BY words.word,words.id
+        ORDER BY resolved DESC
+        LIMIT ${limit};
+        `);
+        return words.map(word => new Word(word));
+    }
+
+
 }

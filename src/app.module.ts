@@ -7,6 +7,7 @@ import { MatchWordCommandHandler } from './application/commands/match-word.comma
 import { SignInUserCommandHandler } from './application/commands/sign-in-user.command';
 import { GetFirstTenPlayersQueryHandler } from './application/queries/get-first-ten-players.query';
 import { GetNumberGamesByPlayerQueryHandler } from './application/queries/get-number-games-by-player.query';
+import { GetWordsMoreResolvedQueryHandler } from './application/queries/get-words-more-resolved.query';
 import { DBProvider } from './DBProvider';
 import { UserWordInfrastucture } from './infrastructure/user-word.infrastructure';
 import { UserInfrastructure } from './infrastructure/user.infrastructure';
@@ -17,7 +18,7 @@ import { WordController } from './interfaces/http/word.controller';
 
 const controllers = [ HealthController,UserController,WordController ];
 const application = [ CreateUserCommandHandler, SignInUserCommandHandler, MatchWordCommandHandler
-  , GetFirstTenPlayersQueryHandler, GetNumberGamesByPlayerQueryHandler];
+  , GetFirstTenPlayersQueryHandler, GetNumberGamesByPlayerQueryHandler, GetWordsMoreResolvedQueryHandler];
 const infrastructure = [ UserInfrastructure,WordInfrastructure, UserWordInfrastucture];
 
 @Module({
