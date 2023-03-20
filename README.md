@@ -20,6 +20,10 @@ La API proporciona servicios:
   * obtener cuantas partidas a jugado un usuario y cuantas victorias ha tenido
   * obtener las palabras más acertadas
 
+Todos los servicios podran verlos en la documentacion ingresando a 
+
+## http://localhost:3000/docs
+
 Además, este proyecto utiliza contenedores Docker para la fácil implementación y administración de la aplicación y la base de datos DynamoDB.
 
 ## Características:
@@ -30,9 +34,6 @@ Además, este proyecto utiliza contenedores Docker para la fácil implementació
 * Uso de Posgres como base de datos
 * Generación de tokens seguros con JWT
 
-## Estructura de Codigo 
-
-![Screen Shot 2023-03-13 at 17 03 16](https://user-images.githubusercontent.com/69777661/224842214-7906a1a0-7de1-4848-886b-7e50f733efe0.png)
 
 
 ## Installation
@@ -49,33 +50,34 @@ $ npm install
 4.- Ir al directorio dockerfiles y levantar las imagenes
 
 ```bash
-$ docker build -t nest-dev .
-$ docker build -t mongodb-image  -f Dockerfile.mongodb .
+$ docker build -t nest-dev -f Dockerfile.app.
+$ docker build -t postgres-image  -f Dockerfile.db .
 ```
 
 5.- Crear los contenedores de la bd y la aplicacion en dev
 
 ```bash
 $ docker run -d app-nestjs-dev -p 3000:3000 -v $(pwd):/app nestjs-dev
-$ docker run -p 27017:27017 mongodb-image
+$ docker run --name my-postgres-container -d -p 5432:5432 -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=wordless  my-postgres-image
 ```
+
+## Enlace de la documentacion ( SWAGER )
+
+http://localhost:3000/docs
+
 ## Uso 
 
-## Crear Token 
+## Crear User 
 
-Url: `card/create-token`
-
-Header: pk:pk_test_dsd
+Url: `/user`
 
 Body: 
 
 ```bash
 {
-	"card_number":"4111111111111111",
-	"expiration_year":"2023",
-	"expiration_month":"02",
-	"cvv":"123",
-	"email":"robert@gmail.com"
+	"userName":"rpopis",
+	"password":"1234",
+	"rol":"admin"
 }
 ```
 
@@ -83,32 +85,117 @@ Respuesta:
 
 ```bash
 {
-	"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjYXJkTnVtYmVyIjoiNDExMTExMTExMTExMTExMSIsImN2diI6IjEyMyIsImV4cGlyYXRpb25Nb250aCI6IjAyIiwiZXhwaXJhdGlvblllYXIiOiIyMDIzIiwiZW1haWwiOiJyb2JlcnRAZ21haWwuY29tIiwiaWF0IjoxNjc4NzM2ODIxLCJleHAiOjE2Nzg3MzY4ODF9.K9tJNMZLHvNvYdiGyvKOu_rqjQmzC3bNQgO7h8f1gWQ",
-	"cardNumber": "4111111111111111",
-	"cvv": "123",
-	"expirationMonth": "02",
-	"expirationYear": "2023",
-	"email": "robert@gmail.com"
+	"id": "8553d146-4b60-49f7-959e-0f4ab04f6a7b",
+	"userName": "rpopis",
+	"password": "$2b$10$SZcP8pR4eRnF2HYZzwwHCODkiA1uiqFWyG54BA7IUcI9bDNAgz.Ra",
+	"rol": "admin",
+	"createdAt": "2023-03-20T06:16:38.403Z"
 }
 ```
 
-## Obtener tarjeta por token
+## Sign-in
 
 
-url: `card/:token`
-
-Header: pk:pk_test_dsd
+url: `/user/sign-in`
 
 Respuesta: 
 
 ```bash
 {
-"cardNumber": "4111111111111111",
-	"expirationMonth": "02",
-	"expirationYear": "2023",
-	"email": "robert@gmail.com"
+	"userName":"rpopis",
+	"password":"1234"
 }
 ```
+
+## Match words
+
+
+url: `/word/match`
+
+
+Body: 
+
+```bash
+{
+	"word":"zanco"
+}
+```
+
+Respuesta: 
+
+```bash
+[
+	{
+		"letter": "z",
+		"value": 3
+	},
+	{
+		"letter": "a",
+		"value": 1
+	},
+	{
+		"letter": "n",
+		"value": 2
+	},
+	{
+		"letter": "c",
+		"value": 3
+	},
+	{
+		"letter": "o",
+		"value": 3
+	}
+]
+```
+
+## Get first 10
+
+
+url: `/user/max-points?number=10`
+
+Respuesta: 
+
+```bash
+[
+	{
+		"userName": "rpopis",
+		"points": "12"
+	},
+  {
+		"userName": "jsilva",
+		"points": "3"
+	}
+]
+```
+
+## Get report games by user
+
+url: `/user/report-games/:userID`
+
+Respuesta: 
+
+```bash
+{
+	"winnerGames": 1,
+	"totalGames": 10
+}
+```
+
+## word more resolved
+
+url: `word/report-word-resolved?limit=3`
+
+```bash
+
+[
+	{
+		"word": "zanco",
+		"id": 643473,
+		"resolved": "1"
+	}
+] 
+```
+
 
 ## Running the app
 
