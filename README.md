@@ -9,7 +9,7 @@
 
 ## Description
 
-Este es un proyecto de API construido con NestJS y MongoDB. La arquitectura sigue el patrón DDD y utiliza CQRS y value objects para mantener la cohesión y la separación de responsabilidades.
+Este es un proyecto de API construido con NestJS y Posgress. La arquitectura sigue el patrón DDD y utiliza CQRS para mantener la cohesión y la separación de responsabilidades.
 
 La API proporciona servicios: 
 
