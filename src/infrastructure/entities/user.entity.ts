@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({ name: "users" })
 export class UserEntity{
@@ -14,9 +14,13 @@ export class UserEntity{
     @Column({ type: 'varchar' , length: 20 , name: 'rol' })
     rol: string;
 
-    @Column({ type: 'datetime' })
+    @CreateDateColumn()
     createdAt: Date;
   
-    @Column({ type: 'datetime', nullable: true })
+    @UpdateDateColumn({
+      type: 'timestamp',
+      default: () => 'CURRENT_TIMESTAMP(6)',
+      onUpdate: 'CURRENT_TIMESTAMP(6)',
+    })
     updatedAt: Date;
 } 
