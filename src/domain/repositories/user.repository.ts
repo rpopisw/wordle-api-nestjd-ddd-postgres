@@ -9,5 +9,5 @@ export interface UserRepository {
         count: number;
     }[]>;
     findNumberGamesCorrectByUserId(userId: string): Promise<number>;
-    findNumberGamesIncorrectByUserId(userId: string): Promise<number>;
+    findNumberGamesByUserId(userId: string): Promise<number>;
 }

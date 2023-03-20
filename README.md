@@ -4,14 +4,21 @@
 
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
-  # API TOKEN TARJETA / NESTJS-MONGODB-DDD-CQRS-DOCKER
+  # API WORDLE / NESTJS-POSTGRES-DDD-CQRS-DOCKER
 </p>
 
 ## Description
 
 Este es un proyecto de API construido con NestJS y MongoDB. La arquitectura sigue el patrón DDD y utiliza CQRS y value objects para mantener la cohesión y la separación de responsabilidades.
 
-La API proporciona dos servicios: crear token y obtener datos de la tarjeta por el token generado. Utiliza JSON Web Tokens (JWT) para generar tokens seguros 
+La API proporciona servicios: 
+
+  * Crear Usuario
+  * Sign-in Usuario
+  * Comparar palabra 
+  * Obtener lista de los 10 primeros usuarios con mas aciertos
+  * obtener cuantas partidas a jugado un usuario y cuantas victorias ha tenido
+  * obtener las palabras más acertadas
 
 Además, este proyecto utiliza contenedores Docker para la fácil implementación y administración de la aplicación y la base de datos DynamoDB.
 
@@ -20,7 +27,7 @@ Además, este proyecto utiliza contenedores Docker para la fácil implementació
 * Patrón de arquitectura DDD
 * CQRS para separar las operaciones de lectura y escritura
 * Value objects para mantener la cohesión y la separación de responsabilidades
-* Uso de MongoDB como base de datos
+* Uso de Posgres como base de datos
 * Generación de tokens seguros con JWT
 
 ## Estructura de Codigo 

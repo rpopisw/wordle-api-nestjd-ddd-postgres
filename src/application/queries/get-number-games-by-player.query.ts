@@ -10,7 +10,7 @@ export class GetNumberGamesByPlayerQuery implements IQuery {
 
 @QueryHandler(GetNumberGamesByPlayerQuery)
 export class GetNumberGamesByPlayerQueryHandler implements IQueryHandler<GetNumberGamesByPlayerQuery, {
-    losserGames: number;
+    totalGames: number;
     winnerGames: number;
 }> {
     constructor(
@@ -18,15 +18,15 @@ export class GetNumberGamesByPlayerQueryHandler implements IQueryHandler<GetNumb
         private repository: UserInfrastructure
     ) { }
     async execute(query: GetNumberGamesByPlayerQuery): Promise<{
-        losserGames: number;
+        totalGames: number;
         winnerGames: number;
     }> {
         const { userId } = query;
         const winnerGames = await this.repository.findNumberGamesCorrectByUserId(userId);
-        const losserGames = await this.repository.findNumberGamesIncorrectByUserId(userId);
+        const totalGames = await this.repository.findNumberGamesByUserId(userId);
         return {
             winnerGames,
-            losserGames 
+            totalGames 
         }
     }
 }

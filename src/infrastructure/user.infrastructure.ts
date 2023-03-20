@@ -66,14 +66,11 @@ export class UserInfrastructure implements UserRepository{
         return 0;
     }
 
-    async findNumberGamesIncorrectByUserId(userId: string): Promise<number> {
+    async findNumberGamesByUserId(userId: string): Promise<number> {
         const user = await DBProvider.manager.getRepository(UserEntity).find({
             relations: ['userWords'],
             where: {
-                id: userId,
-                userWords: {
-                    isResolved: false
-                }
+                id: userId
             }
         });
         if(user.length > 0){
