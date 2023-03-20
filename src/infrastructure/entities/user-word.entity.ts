@@ -10,6 +10,9 @@ export class UserWordEntity {
     @Column({ type: 'boolean' , name: 'is_resolved' })
     isResolved: boolean;
 
+    @Column({ type: 'integer' , name: 'attempts', default: 0 })
+    attempts: number;
+
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP(6)', name: 'created_at' })
     createdAt: Date;
   

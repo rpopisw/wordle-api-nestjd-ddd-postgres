@@ -42,7 +42,7 @@ export class WordInfrastructure implements WordRepository {
         const day = dateNowLessFiveMinutes.getDate();
         const dateNowLessFiveMinutesString = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         const word = await DBProvider.manager.getRepository(WordEntity).query(`
-          SELECT words.word as word,* from user_words
+          SELECT words.word as word,words.id as id from user_words
           join words on words.id = user_words.word_id
           WHERE user_id = '${userId}'
           and created_at > '${dateNowLessFiveMinutesString}'

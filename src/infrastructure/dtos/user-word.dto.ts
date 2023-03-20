@@ -8,6 +8,7 @@ export class UserWordDTO{
         userWordEntity.word = userWord.properties().wordId as any; 
         userWordEntity.user = userWord.properties().userId as any;
         userWordEntity.isResolved = userWord.properties().isResolved;
+        userWordEntity.attempts = userWord.properties().attempts;
         userWordEntity.createdAt = userWord.properties().createdAt;
         userWordEntity.updatedAt = userWord.properties().updatedAt;
         return userWordEntity;
@@ -18,6 +19,7 @@ export class UserWordDTO{
             id: userWordEntity.id,
             wordId: userWordEntity.word.id,
             userId: userWordEntity.user.id,
+            attempts: userWordEntity.attempts,
         });
         return userWord;
     }

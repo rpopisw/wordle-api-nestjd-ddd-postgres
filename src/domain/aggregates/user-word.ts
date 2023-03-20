@@ -1,3 +1,4 @@
+import { BadRequestException } from "@nestjs/common";
 import { AggregateRoot } from "@nestjs/cqrs";
 
 export type UserWordsEssentials = {
@@ -8,6 +9,7 @@ export type UserWordsEssentials = {
 export type UserWordsOptional = {
     id?: number;
     isResolved?: boolean;
+    attempts?: number;
 }
 
 export type UserWords = Required<UserWordsEssentials> & Partial<UserWordsOptional>;
@@ -19,6 +21,7 @@ export class UserWord extends AggregateRoot<UserWords> {
     private readonly createdAt: Date;
     private readonly updatedAt: Date;
     private isResolved: boolean;
+    private attempts: number = 0;
 
     constructor(properties: UserWords) {
         super();
@@ -33,12 +36,23 @@ export class UserWord extends AggregateRoot<UserWords> {
             userId: this.userId,
             wordId: this.wordId,
             isResolved: this.isResolved,
+            attempts: this.attempts,
             createdAt: this.createdAt,
             updatedAt: this.updatedAt
+        }
+    }
+
+    attemptsCount() {
+        if (this.attempts >= 5) {
+            throw new BadRequestException("You have reached the maximum number of attempts");
+        }else{
+            return this.attempts++;
         }
     }
 
     resolve() {
         this.isResolved = true;
     }
+
+
 }
