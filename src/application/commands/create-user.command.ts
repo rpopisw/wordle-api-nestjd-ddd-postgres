@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { BadRequestException, Inject } from "@nestjs/common";
 import { CommandHandler, ICommand, ICommandHandler } from "@nestjs/cqrs";
 import { User } from "src/domain/aggregates/user";
 import { UserRepository } from "src/domain/repositories/user.repository";
@@ -21,6 +21,10 @@ export class CreateUserCommandHandler implements ICommandHandler<CreateUserComma
     ){}
     async execute(command: CreateUserCommand): Promise<CreateUserResponseDto> {
         const { userName, password, rol } = command;
+        const userExists = await this.repository.findByUserName(userName);
+        if(userExists){
+            throw new BadRequestException('User already exists');
+        }
         const user = new User({ userName, password, rol });
         const userCreated = await this.repository.save(user);
         return CreateUserResponseDto.fromDomainToResponse(userCreated);

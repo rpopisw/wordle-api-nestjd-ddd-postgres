@@ -14,5 +14,16 @@ export class UserInfrastructure implements UserRepository{
     findById(id: string): Promise<User> {
         throw new Error("Method not implemented.");
     }
+    async findByUserName(userName: string): Promise<User> {
+        const user = await DBProvider.manager.getRepository(UserEntity).find({
+            where: {
+                userName
+            }
+        });
+        if(user.length > 0){
+            return UserDTO.fromEntityToDomain(user[0]);
+        }
+        return null;
+    }
      
 }
