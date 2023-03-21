@@ -8,23 +8,6 @@ let app: TestingModule;
 let createUserCommandHandler: any
 let userInfrastructure: UserInfrastructure;
 
-jest.mock('src/infrastructure/user.infrastructure', () => ({
-    UserInfrastructure: jest.fn().mockImplementation(() => ({
-        findByUserName: jest.fn().mockImplementation(() => null),
-        save: jest.fn().mockImplementation(() => (
-            {
-                properties: () => ({
-                    userName: 'test',
-                    password: 'test',
-                    rol: 'test',
-                    id: 'test',
-                    createdAt: 'test',
-                }),
-            }
-        ))
-    }))
-}));
-
 describe('CreateUserCommand', () => {
     beforeAll(async () => {
         app = await Test.createTestingModule({
@@ -64,6 +47,20 @@ describe('CreateUserCommand', () => {
             rol: 'test',
             createdAt: new Date('2020-01-01'),
         })
+    });
+
+    test('should throw an error if user already exists', async () => {
+        const command = new CreateUserCommand('test', 'test', 'test');
+        const user = new User({
+            userName: 'test',
+            password: 'test',
+            rol: 'test',
+            id: 'test',
+        });
+        const mockFindByUserName = jest
+            .spyOn(userInfrastructure, 'findByUserName')
+            .mockResolvedValueOnce(user);
+        await expect(createUserCommandHandler.execute(command)).rejects.toThrowError('User already exists');
     });
 
 });
