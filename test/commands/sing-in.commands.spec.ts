@@ -51,4 +51,16 @@ describe('SignInUserCommand', () => {
             token: 'token'
         });
     });
+
+    test('should throw an error if user does not exists', async () => {
+        const command = {
+            userName: 'test',
+            password: 'test'
+        }
+        const mockFindByUserName = jest
+            .spyOn(userInfrastructure, 'findByUserName')
+            .mockResolvedValueOnce(null);
+        await expect(signInCommandHandler.execute(command)).rejects.toThrow('User not found');
+    });
+
 });

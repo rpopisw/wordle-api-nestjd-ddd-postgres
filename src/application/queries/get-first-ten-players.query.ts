@@ -19,7 +19,6 @@ export class GetFirstTenPlayersQueryHandler implements IQueryHandler<GetFirstTen
     async execute(query: GetFirstTenPlayersQuery): Promise<GetFirstTenPlayersResponseDto[]> {
         const { number } = query;
         const users = await this.repository.findFirstUsers(number);
-        console.log(users);
         const response = users.map(user => {
             return {
                 userName: user.userName,

@@ -77,6 +77,8 @@
       "<rootDir>"
     ],
     "coveragePathIgnorePatterns": [
+      " src/core/exceptions",
+      "src/interfaces/http/dtos",
       "/dist/",
       "app.module.ts",
       "main.ts",
